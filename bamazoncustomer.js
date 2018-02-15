@@ -7,6 +7,8 @@ var productID;
 var productUnitCount;
 var warehouseCount;
 
+var resultObject;
+
 // connection variable with port/username/password/etc.
 var connection = mysql.createConnection({
   host: "localhost",
@@ -21,7 +23,7 @@ var connection = mysql.createConnection({
 // this function connects user upon the file being loaded in node
 connection.connect(function(err) {
   if (err) throw err;
-  console.log("connected as id " + connection.threadId + "\n");
+  //console.log("connected as id " + connection.threadId + "\n");
 });
 
 // starting function, called at the bottom of the file
@@ -29,9 +31,11 @@ var startup = function(){
   // query that selects all (denoted by *) rows from the products table
 	connection.query("SELECT * FROM products", 
 		function(err, res) {
-		if (err) throw err;
+    if (err) throw err;
+    // saving result to global variable
+    resultObject = res;
 		// for loop that loops through results and console logs out products and information about them
-		for (var i = 0; i < 10; i++){
+		for (var i = 0; i < resultObject.length; i++){
 			console.log("\nItem ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: $" + res[i].price);
     }
     // console log to give an extra space beneath the products without having to add that space to each looped console log
@@ -51,7 +55,7 @@ var buyOptions = function(){
   	message: "What is the item ID of the item you would like to buy?"
   	}).then(function(answers) {
       // if/else statement checking that the entered number is valid as an item_id
-  		if (parseInt(answers.ID) < 11 && parseInt(answers.ID) >= 0){
+  		if (parseInt(answers.ID) < resultObject.length + 1){
         // setting global variable to property of answers object
         productID = answers.ID;
 
@@ -98,7 +102,7 @@ var fulfillOrder = function(){
 // function to update the units according to how many were bought
 var updateUnits = function(){
   // setting variable to the new number of units
-  var newQuantity = warehouseCount - productUnitCount;
+  var newQuantity = parseInt(warehouseCount) - parseInt(productUnitCount);
   // updating stock quantity 
   connection.query("UPDATE products SET ? WHERE ?",
     [
@@ -116,4 +120,5 @@ var updateUnits = function(){
   connection.end();
 }
 
+// calling first function
 startup();
