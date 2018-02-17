@@ -1,0 +1,25 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "Bamazon is an app that allows the user to switch between customer or manager views, giving them the option to purchase items in the customer view, and view, create, and add more stock to items in the manager view.",
+  "main": "bamazon.js",
+  "dependencies": {
+    "inquirer": "^5.1.0",
+    "mysql": "^2.15.0",
+    "sql": "^0.78.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frankwichw/bamazon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frankwichw/bamazon/issues"
+  },
+  "homepage": "https://github.com/frankwichw/bamazon#readme"
+}
